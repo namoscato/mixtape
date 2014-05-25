@@ -1,0 +1,69 @@
+@import 'normalize';
+
+$black: #0A0A0A;
+$gray: #DEDEDE;
+$light-gray: #F0F0F0;
+$white: #FCFCFC;
+$green: #008000;
+
+html,
+body {
+  color: $black;
+  font: 14px/1.6em Helvetica, Arial, sans-serif;
+}
+
+#mixtape {
+  li {
+    border-bottom: 1px solid $gray;
+    cursor: pointer;
+    padding: 15px;
+    position: relative;
+    &:hover {
+      background: $white;
+    }
+
+    .bar {
+      left: 0;
+      position: absolute;
+      &.loading {
+        bottom: 0;
+        top: 0;
+      }
+      &.progress {
+        bottom: -1px;
+        height: 2px;
+      }
+    }
+
+    .content {
+      position: relative;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .progress-time {
+      display: none;
+    }
+
+    .title {
+      font-size: 20px;
+    }
+
+    &.playing {
+      .bar {
+        &.loading {
+          background: $light-gray;
+        }
+        &.progress {
+          background: $green;
+        }
+      }
+
+      .progress-time {
+        display: inline ;
+      }
+    }
+  }
+}
