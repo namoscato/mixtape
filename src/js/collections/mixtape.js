@@ -1,13 +1,26 @@
 define([
   'backbone',
   'models/track',
-  'lib/id3'
-], function(Backbone, Track) {
+  'models/player'
+], function(Backbone, Track, Player) {
   'use strict';
   
   var Mixtape = Backbone.Collection.extend({
     
     model: Track,
+
+    fetch: function() {
+      var my = this;
+
+      $.ajax({
+        url: 'api/tracks'
+      }).done(function(data) {
+        var mixtape = $.parseJSON(data);
+        Player.sm.onready(function() {
+          my.reset(mixtape);
+        });
+      });
+    },
 
     add: function(data) {
       if (data instanceof Array) {
@@ -20,20 +33,11 @@ define([
     },
 
     addOne: function(data) {
-      var me = this;
-
-      // load tags via JavaScript-ID3-Reader
-      // see https://github.com/aadsm/JavaScript-ID3-Reader
-      ID3.loadTags(data.src, function() {
-        var tags = ID3.getAllTags(data.src);
-        Backbone.Collection.prototype.add.call(me, {
-          title: tags.title,
-          artist: tags.artist,
-          album: tags.album,
-          src: data.src
-        });
+      Backbone.Collection.prototype.add.call(this, {
+        src: data.src
+      }, {
+        at: data.order
       });
-      
     }
     
   });

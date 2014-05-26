@@ -1,13 +1,17 @@
 define([
   'underscore',
   'backbone',
-  'models/player'
+  'models/player',
+  'lib/id3'
 ], function(_, Backbone, Player) {
   'use strict';
   
   var TrackModel = Backbone.Model.extend({
 
     defaults: {
+      title: '',
+      artist: '',
+      album: '',
       sound: null,
       duration: 0,
       percentLoaded: 0,
@@ -19,6 +23,7 @@ define([
     initialize: function() {
       var my = this;
       
+      // create Sound Manager sound
       this.set('sound', Player.sm.createSound({
         url: this.get('src'),
         id: this.cid,
@@ -28,7 +33,16 @@ define([
           my.whileLoading.call(my);
         }
       }));
-      
+
+      // load ID3 tags
+      ID3.loadTags(my.get('src'), function() {
+        var tags = ID3.getAllTags(my.get('src'));
+        my.set({
+          title: tags.title,
+          artist: tags.artist,
+          album: tags.album
+        });
+      });
     },
 
     isPlaying: function() {

@@ -1,3 +1,4 @@
 *.sass-cache
 *.css
 *.mp3
+.data.*

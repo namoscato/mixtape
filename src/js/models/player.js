@@ -48,6 +48,7 @@ define([
           my.current.whilePlaying.call(my.current);
         }
       });
+      document.title = my.current.get('title') + ' - ' + my.current.get('artist');
     },
 
     resume: function() {

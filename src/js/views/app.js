@@ -13,26 +13,13 @@ define([
     el: '#mixtape',
     
     initialize: function() {
-      
       this.listenTo(Mixtape, 'add', this.addTrack);
       
-      $.ajax({
-        url: 'api/listDirectory'
-      }).done(function(data) {
-        var mixtape = $.parseJSON(data);
-        Player.sm.onready(function() {
-          for (var i in mixtape) {
-            Mixtape.add(mixtape[i]);
-          }
-        });
-      });
-
-      
+      Mixtape.fetch();
     },
 
     addTrack: function(data) {
       var view = new TrackView({model: data});
-
       this.$el.append(view.render().el);
     }
 
